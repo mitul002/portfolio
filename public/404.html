@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redirecting...</title>
+    <script>
+      // Redirect all routes to index.html for SPA routing
+      var pathParts = window.location.pathname.split('/');
+      var lastPart = pathParts[pathParts.length - 1];
+      
+      // If accessing a path without an extension (like /portfolio/about), redirect to index.html
+      if (lastPart === '' || lastPart === 'portfolio' || !lastPart.includes('.')) {
+        window.location.replace('/portfolio/');
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
