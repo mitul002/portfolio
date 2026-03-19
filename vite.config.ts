@@ -5,4 +5,19 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   base: "/portfolio/",
   plugins: [react()],
+  server: {
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Embedder-Policy": "require-corp",
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
+  // Properly handle static WASM and decoder files
+  assetsInclude: ["**/*.wasm", "**/*.js", "**/draco/*"],
 });

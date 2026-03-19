@@ -1,0 +1,6 @@
+<Files "draco_decoder.js">
+  AddType application/javascript .js
+</Files>
+<Files "*.wasm">
+  AddType application/wasm .wasm
+</Files>

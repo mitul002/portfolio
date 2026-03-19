@@ -10,7 +10,12 @@ const setCharacter = (
 ) => {
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/portfolio/draco/");
+  
+  // Set the decoder path with base URL - GitHub Pages friendly
+  const baseUrl = window.location.href.includes('/portfolio/') 
+    ? '/portfolio/draco/' 
+    : '/draco/';
+  dracoLoader.setDecoderPath(baseUrl);
   loader.setDRACOLoader(dracoLoader);
 
   const loadCharacter = () => {
