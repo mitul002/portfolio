@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Studio | Premium Digital Agency</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: { 50: '#f0fdfa', 500: '#14b8a6', 600: '#0d9488', 900: '#134e4a' }
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                        'spin-slow': 'spin 10s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: { '0%': { transform: 'translateX(0%)' }, '100%': { transform: 'translateX(-50%)' } }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Lenis Smooth Scrolling CSS -->
+    <style>
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+    </style>
+    
+    <style>
+        /* Base & Scrollbar */
+        body { background-color: #fafafa; color: #09090b; transition: background-color 0.5s ease, color 0.5s ease; overflow-x: hidden; cursor: none; }
+        .dark body { background-color: #09090b; color: #fafafa; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #52525b; }
+
+        /* Custom Cursor (Hardware Accelerated) */
+        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none; will-change: transform; }
+        .cursor-dot { width: 8px; height: 8px; background-color: #14b8a6; border-radius: 50%; }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(20, 184, 166, 0.5); border-radius: 50%; transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s; }
+        .cursor-hover .cursor-outline { width: 60px; height: 60px; background-color: rgba(20, 184, 166, 0.1); border-color: #14b8a6; }
+
+        /* Canvas Background */
+        #interactive-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
+        .dark #interactive-canvas { opacity: 0.3; }
+
+        /* Preloader */
+        #preloader { position: fixed; inset: 0; z-index: 10000; background: #09090b; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        
+        /* Gradients & Glassmorphism */
+        .glass-nav { background: rgba(250, 250, 250, 0.7); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(0, 0, 0, 0.05); transform: translateZ(0); will-change: backdrop-filter; }
+        .dark .glass-nav { background: rgba(9, 9, 11, 0.7); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-panel { background: rgba(255,255,255,0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); transform: translateZ(0); }
+        
+        /* Hardware Accelerated Glows (Replaced heavy blur filters) */
+        .hero-glow { background: radial-gradient(circle, rgba(20,184,166,0.15) 0%, rgba(59,130,246,0.15) 40%, transparent 70%); pointer-events: none; transform: translateZ(0); }
+        .dark .hero-glow { background: radial-gradient(circle, rgba(20,184,166,0.1) 0%, rgba(59,130,246,0.1) 40%, transparent 70%); }
+
+        /* Typography */
+        h1, h2, h3, .logo-text { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
+
+        /* Animations */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        
+        /* Cards */
+        .service-card, .portfolio-card { background: rgba(0, 0, 0, 0.02); border: 1px solid rgba(0, 0, 0, 0.05); transition: all 0.4s ease; }
+        .dark .service-card, .dark .portfolio-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .service-card:hover, .portfolio-card:hover { transform: translateY(-10px); border-color: #14b8a6; box-shadow: 0 20px 40px rgba(20, 184, 166, 0.1); }
+        .magnetic-wrap { display: inline-block; }
+        
+        /* Hide scrollbar for marquee/sliders */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="flex flex-col items-center">
+            <div class="w-16 h-16 border-4 border-zinc-800 border-t-brand-500 rounded-full animate-spin mb-4"></div>
+            <div class="text-brand-500 font-display font-bold text-xl tracking-widest uppercase animate-pulse">Initializing</div>
+        </div>
+    </div>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <!-- INTERACTIVE CANVAS -->
+    <canvas id="interactive-canvas"></canvas>
+
+    <!-- VIDEO MODAL -->
+    <div id="video-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-md interactive" onclick="window.closeVideoModal()"></div>
+        <div class="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="video-content">
+            <button onclick="window.closeVideoModal()" class="absolute top-4 right-4 z-10 text-white/50 hover:text-white interactive bg-black/50 p-2 rounded-full">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <div class="absolute inset-0 flex items-center justify-center text-zinc-500 flex-col">
+                <i data-lucide="play-circle" class="w-16 h-16 mb-4 opacity-50"></i>
+                <p>Cinematic Showreel Integration Goes Here</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT MODAL (Firebase Connected) -->
+    <div id="contact-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm interactive" onclick="window.closeModal()"></div>
+        <div class="relative w-full max-w-lg bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="contact-content">
+            <button onclick="window.closeModal()" class="absolute top-6 right-6 text-zinc-500 hover:text-zinc-900 dark:hover:text-white interactive">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <h3 class="text-3xl font-bold mb-2">Let's build something.</h3>
+            <p class="text-zinc-500 dark:text-zinc-400 mb-8">Securely submitted directly to our agency CRM via Firebase.</p>
+            
+            <form id="lead-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-2 text-zinc-700 dark:text-zinc-300">Name</label>
+                    <input type="text" id="lead-name" required class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 text-zinc-900 dark:text-white focus:outline-none focus:border-brand-500 interactive">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2 text-zinc-700 dark:text-zinc-300">Email</label>
+                    <input type="email" id="lead-email" required class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 text-zinc-900 dark:text-white focus:outline-none focus:border-brand-500 interactive">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2 text-zinc-700 dark:text-zinc-300">Interested In</label>
+                    <select id="lead-service" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 text-zinc-900 dark:text-white focus:outline-none focus:border-brand-500 interactive appearance-none">
+                        <option>Full Agency Retainer (Enterprise)</option>
+                        <option>Web Development</option>
+                        <option>UI/UX Design</option>
+                        <option>AI Automation</option>
+                        <option>Graphic/Video Design</option>
+                    </select>
+                </div>
+                <button type="submit" id="lead-submit-btn" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-4 rounded-xl mt-4 transition-colors shadow-lg shadow-brand-500/30 interactive flex justify-center items-center gap-2">
+                    <span>Send Secure Request</span>
+                </button>
+                <div id="lead-status" class="hidden text-center text-sm font-bold mt-2"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI CHAT WIDGET (Gemini Connected) -->
+    <div id="chat-widget" class="fixed bottom-6 right-6 z-[90] flex flex-col items-end">
+        <!-- Chat Window -->
+        <div id="chat-window" class="hidden w-full max-w-[350px] sm:w-[350px] h-[500px] bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-2xl mb-4 flex-col overflow-hidden transition-all origin-bottom-right">
+            <div class="bg-brand-500 p-4 flex justify-between items-center text-white">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="bot" class="w-5 h-5"></i>
+                    <span class="font-bold">Pixel Bot</span>
+                </div>
+                <button onclick="window.toggleChat()" class="hover:bg-white/20 p-1 rounded interactive"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto flex flex-col gap-4 text-sm hide-scrollbar" data-lenis-prevent>
+                <div class="bg-zinc-100 dark:bg-zinc-900 p-3 rounded-2xl rounded-tl-sm text-zinc-800 dark:text-zinc-200 self-start max-w-[85%]">
+                    Hi! I'm Pixel Studio's AI assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex gap-2">
+                <input type="text" id="chat-input" placeholder="Type a message..." class="flex-1 bg-transparent outline-none text-sm dark:text-white interactive">
+                <button id="chat-send" class="bg-brand-500 text-white p-2 rounded-lg hover:bg-brand-600 interactive"><i data-lucide="send" class="w-4 h-4"></i></button>
+            </div>
+        </div>
+        <!-- FAB -->
+        <button onclick="window.toggleChat()" class="w-14 h-14 bg-brand-500 rounded-full shadow-2xl shadow-brand-500/40 flex items-center justify-center text-white hover:scale-110 transition-transform interactive group">
+            <i data-lucide="message-square" class="w-6 h-6 group-hover:hidden block"></i>
+            <i data-lucide="bot" class="w-6 h-6 hidden group-hover:block animate-bounce"></i>
+        </button>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="glass-nav fixed w-full z-50 transition-all duration-300 px-6 py-4" id="navbar">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3 interactive cursor-pointer" onclick="window.scrollTo(0,0)">
+                <div class="w-10 h-10 bg-zinc-900 dark:bg-white rounded-xl flex items-center justify-center transition-colors">
+                    <i data-lucide="layers" class="w-6 h-6 text-white dark:text-zinc-900"></i>
+                </div>
+                <span class="logo-text text-xl font-bold tracking-tight">Pixel<span class="text-brand-500">Studio</span></span>
+            </div>
+            
+            <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-zinc-600 dark:text-zinc-300">
+                <a href="#portfolio" class="hover:text-brand-500 transition-colors interactive nav-link">Work</a>
+                <a href="#services" class="hover:text-brand-500 transition-colors interactive nav-link">Services</a>
+                <a href="#process" class="hover:text-brand-500 transition-colors interactive nav-link">Process</a>
+                <a href="#insights" class="hover:text-brand-500 transition-colors interactive nav-link">Insights</a>
+                <a href="#pricing" class="hover:text-brand-500 transition-colors interactive nav-link">Pricing</a>
+                <a href="#ai-labs" class="hover:text-brand-500 transition-colors interactive text-brand-500 flex items-center gap-1 nav-link"><i data-lucide="sparkles" class="w-3 h-3"></i> AI Labs</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button id="theme-toggle" class="interactive p-2 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors">
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-amber-400"></i>
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-zinc-700"></i>
+                </button>
+                <div class="magnetic-wrap hidden sm:block">
+                    <button onclick="window.openModal()" class="magnetic-btn interactive bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-5 py-2.5 rounded-full text-sm font-bold transition-transform hover:scale-105">
+                        Let's Talk
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="relative min-h-screen flex items-center pt-24 pb-20 px-6 overflow-hidden">
+        <div class="absolute inset-0 opacity-40 dark:opacity-20 z-0 pointer-events-none" style="background-image: radial-gradient(rgba(150, 150, 150, 0.4) 1px, transparent 1px); background-size: 30px 30px; mask-image: radial-gradient(circle at center, black 40%, transparent 100%); -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);"></div>
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[600px] hero-glow rounded-full z-0 pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mt-10">
+            <div class="lg:col-span-8">
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-sm font-semibold mb-8 reveal shadow-sm backdrop-blur-md">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
+                    </span>
+                    <span id="dynamic-greeting">Next-Gen Creative Agency</span>
+                </div>
+                
+                <h1 class="text-6xl md:text-8xl lg:text-[6.5rem] font-black tracking-tighter leading-[0.95] mb-8 reveal" style="transition-delay: 100ms;">
+                    Design that <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 via-blue-500 to-indigo-600">demands</span> attention.
+                </h1>
+                
+                <p class="text-lg md:text-2xl text-zinc-600 dark:text-zinc-400 max-w-2xl mb-12 reveal font-light leading-relaxed" style="transition-delay: 200ms;">
+                    We are a strategic design & technology agency building premium digital experiences for forward-thinking brands.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 reveal" style="transition-delay: 300ms;">
+                    <div class="magnetic-wrap w-full sm:w-auto">
+                        <button onclick="window.openModal()" class="magnetic-btn interactive w-full sm:w-auto px-8 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-2xl font-bold hover:bg-brand-500 dark:hover:bg-brand-500 hover:text-white transition-all duration-300 shadow-xl flex items-center justify-center gap-3 group">
+                            Start a Project <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                        </button>
+                    </div>
+                    <div class="magnetic-wrap w-full sm:w-auto">
+                        <button onclick="window.openVideoModal()" class="magnetic-btn interactive w-full sm:w-auto px-8 py-4 bg-transparent text-zinc-900 dark:text-white border border-zinc-300 dark:border-zinc-700 rounded-2xl font-bold hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center justify-center gap-3">
+                            <i data-lucide="play-circle" class="w-5 h-5"></i> View Showreel
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-4 hidden lg:flex justify-end reveal" style="transition-delay: 400ms;">
+                <div class="relative w-80 h-80">
+                    <div class="absolute inset-0 rounded-full mix-blend-multiply dark:mix-blend-screen opacity-40 animate-pulse pointer-events-none transform-gpu" style="background: radial-gradient(circle, rgba(20,184,166,0.8) 0%, transparent 70%);"></div>
+                    <div class="absolute inset-10 border border-zinc-300 dark:border-zinc-700 rounded-full animate-spin-slow pointer-events-none"></div>
+                    <div class="absolute inset-16 border border-brand-500/50 rounded-full border-dashed animate-[spin_15s_linear_infinite_reverse] pointer-events-none"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-36 h-36 bg-white dark:bg-zinc-900 rounded-full shadow-2xl flex items-center justify-center border border-zinc-100 dark:border-zinc-800 z-10 interactive hover:scale-110 transition-transform">
+                            <i data-lucide="compass" class="w-14 h-14 text-brand-500"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST LOGO MARQUEE -->
+    <section class="py-10 border-y border-zinc-200 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 overflow-hidden relative">
+        <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#fafafa] dark:from-[#09090b] to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#fafafa] dark:from-[#09090b] to-transparent z-10 pointer-events-none"></div>
+        <div class="flex w-[200%] animate-marquee" style="will-change: transform;">
+            <!-- Set 1 -->
+            <div class="flex w-1/2 justify-around items-center opacity-40 grayscale filter hover:grayscale-0 transition-all duration-500 interactive">
+                <span class="text-2xl font-black tracking-tighter text-zinc-900 dark:text-white">MICROSOFT</span>
+                <span class="text-2xl font-bold italic text-zinc-900 dark:text-white">STRIPE</span>
+                <span class="text-2xl font-serif text-zinc-900 dark:text-white">Airbnb</span>
+                <span class="text-2xl font-bold text-zinc-900 dark:text-white">COINBASE</span>
+                <span class="text-2xl font-medium tracking-widest text-zinc-900 dark:text-white">DISNEY</span>
+            </div>
+            <!-- Set 2 (Duplicate for loop) -->
+            <div class="flex w-1/2 justify-around items-center opacity-40 grayscale filter hover:grayscale-0 transition-all duration-500 interactive">
+                <span class="text-2xl font-black tracking-tighter text-zinc-900 dark:text-white">MICROSOFT</span>
+                <span class="text-2xl font-bold italic text-zinc-900 dark:text-white">STRIPE</span>
+                <span class="text-2xl font-serif text-zinc-900 dark:text-white">Airbnb</span>
+                <span class="text-2xl font-bold text-zinc-900 dark:text-white">COINBASE</span>
+                <span class="text-2xl font-medium tracking-widest text-zinc-900 dark:text-white">DISNEY</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO SHOWCASE -->
+    <section id="portfolio" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+                <div class="max-w-2xl">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Selected Work</h2>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-lg">A glimpse into digital experiences we've engineered for industry leaders.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="portfolio-card rounded-[2rem] overflow-hidden group interactive reveal">
+                    <div class="relative aspect-[4/3] bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/20 to-purple-500/20 group-hover:scale-105 transition-transform duration-700 pointer-events-none"></div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm pointer-events-none">
+                            <span class="px-6 py-3 bg-white text-black font-bold rounded-full pointer-events-auto hover:scale-105 transition-transform">View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800">Web App</span>
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800">Fintech</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Nexus Banking</h3>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm">A complete UX overhaul and React Native build for a leading neobank.</p>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="portfolio-card rounded-[2rem] overflow-hidden group interactive reveal" style="transition-delay: 100ms;">
+                    <div class="relative aspect-[4/3] bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-500/20 to-emerald-500/20 group-hover:scale-105 transition-transform duration-700 pointer-events-none"></div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40 backdrop-blur-sm pointer-events-none">
+                            <span class="px-6 py-3 bg-white text-black font-bold rounded-full pointer-events-auto hover:scale-105 transition-transform">View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex gap-2 mb-4">
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800">E-Commerce</span>
+                            <span class="text-xs font-semibold px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800">Next.js</span>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Aura Fashion</h3>
+                        <p class="text-zinc-500 dark:text-zinc-400 text-sm">Headless Shopify integration resulting in a 40% increase in conversion rate.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES (Grid) -->
+    <section id="services" class="py-32 px-6 bg-zinc-100/50 dark:bg-zinc-900/20 border-y border-zinc-200 dark:border-zinc-800">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center reveal">Our Capabilities</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Service Cards -->
+                <div class="service-card p-8 rounded-3xl reveal"><i data-lucide="layout" class="w-8 h-8 text-brand-500 mb-6"></i><h3 class="text-xl font-bold mb-3">UI/UX Design</h3><p class="text-sm text-zinc-500 mb-6">Frictionless user journeys and stunning interfaces.</p><button onclick="window.openModal()" class="text-brand-500 text-sm font-bold interactive">Book Service &rarr;</button></div>
+                <div class="service-card p-8 rounded-3xl reveal" style="transition-delay:100ms;"><i data-lucide="code" class="w-8 h-8 text-blue-500 mb-6"></i><h3 class="text-xl font-bold mb-3">Web Development</h3><p class="text-sm text-zinc-500 mb-6">High-performance React & Next.js applications.</p><button onclick="window.openModal()" class="text-brand-500 text-sm font-bold interactive">Book Service &rarr;</button></div>
+                <div class="service-card p-8 rounded-3xl reveal" style="transition-delay:200ms;"><i data-lucide="bot" class="w-8 h-8 text-purple-500 mb-6"></i><h3 class="text-xl font-bold mb-3">AI Automation</h3><p class="text-sm text-zinc-500 mb-6">Custom LLM agents and workflow automation.</p><button onclick="window.openModal()" class="text-brand-500 text-sm font-bold interactive">Book Service &rarr;</button></div>
+                <div class="service-card p-8 rounded-3xl reveal"><i data-lucide="video" class="w-8 h-8 text-orange-500 mb-6"></i><h3 class="text-xl font-bold mb-3">Video Editing</h3><p class="text-sm text-zinc-500 mb-6">Cinematic cuts and motion graphics.</p><button onclick="window.openModal()" class="text-brand-500 text-sm font-bold interactive">Book Service &rarr;</button></div>
+                <div class="service-card p-8 rounded-3xl reveal" style="transition-delay:100ms;"><i data-lucide="music" class="w-8 h-8 text-pink-500 mb-6"></i><h3 class="text-xl font-bold mb-3">Sound Design</h3><p class="text-sm text-zinc-500 mb-6">Immersive audio landscapes and foley.</p><button onclick="window.openModal()" class="text-brand-500 text-sm font-bold interactive">Book Service &rarr;</button></div>
+                <div class="service-card p-8 rounded-3xl reveal" style="transition-delay:200ms;"><i data-lucide="pen-tool" class="w-8 h-8 text-emerald-500 mb-6"></i><h3 class="text-xl font-bold mb-3">Graphic Design</h3><p class="text-sm text-zinc-500 mb-6">Brand identity and visual storytelling.</p><button onclick="window.openModal()" class="text-brand-500 text-sm font-bold interactive">Book Service &rarr;</button></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS SECTION -->
+    <section id="process" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">How We Work</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 text-lg max-w-2xl mx-auto">A streamlined, transparent process designed to take your project from concept to global launch without friction.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Process Steps -->
+                <div class="relative reveal">
+                    <div class="text-8xl font-black text-zinc-200 dark:text-zinc-800 absolute -top-10 -left-4 z-0 opacity-50 pointer-events-none">01</div>
+                    <div class="relative z-10"><div class="w-12 h-12 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center border-2 border-brand-500 mb-6 shadow-lg text-brand-500"><i data-lucide="search" class="w-5 h-5"></i></div><h3 class="text-xl font-bold mb-3">Discovery</h3><p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">We audit your brand, analyze competitors, and define scope.</p></div>
+                </div>
+                <div class="relative reveal" style="transition-delay: 100ms;">
+                    <div class="text-8xl font-black text-zinc-200 dark:text-zinc-800 absolute -top-10 -left-4 z-0 opacity-50 pointer-events-none">02</div>
+                    <div class="relative z-10"><div class="w-12 h-12 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center border-2 border-brand-500 mb-6 shadow-lg text-brand-500"><i data-lucide="figma" class="w-5 h-5"></i></div><h3 class="text-xl font-bold mb-3">Design</h3><p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">High-fidelity UI/UX design matching your exact vision.</p></div>
+                </div>
+                <div class="relative reveal" style="transition-delay: 200ms;">
+                    <div class="text-8xl font-black text-zinc-200 dark:text-zinc-800 absolute -top-10 -left-4 z-0 opacity-50 pointer-events-none">03</div>
+                    <div class="relative z-10"><div class="w-12 h-12 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center border-2 border-brand-500 mb-6 shadow-lg text-brand-500"><i data-lucide="terminal" class="w-5 h-5"></i></div><h3 class="text-xl font-bold mb-3">Development</h3><p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">Engineers write clean, scalable code and integrate LLMs.</p></div>
+                </div>
+                <div class="relative reveal" style="transition-delay: 300ms;">
+                    <div class="text-8xl font-black text-zinc-200 dark:text-zinc-800 absolute -top-10 -left-4 z-0 opacity-50 pointer-events-none">04</div>
+                    <div class="relative z-10"><div class="w-12 h-12 bg-white dark:bg-zinc-800 rounded-full flex items-center justify-center border-2 border-brand-500 mb-6 shadow-lg text-brand-500"><i data-lucide="rocket" class="w-5 h-5"></i></div><h3 class="text-xl font-bold mb-3">Launch</h3><p class="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed">Thorough QA testing, deployment, and ongoing support.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSIGHTS & BLOG SECTION -->
+    <section id="insights" class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+                <div class="max-w-2xl">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Latest Insights</h2>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-lg">Thoughts on design, engineering, and the future of AI.</p>
+                </div>
+                <button onclick="window.openModal()" class="mt-6 md:mt-0 interactive text-brand-500 font-bold flex items-center gap-2 hover:gap-4 transition-all group">
+                    View All Articles <i data-lucide="arrow-right" class="w-5 h-5 group-hover:text-brand-400"></i>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="#" class="group interactive reveal">
+                    <div class="aspect-[16/9] bg-zinc-200 dark:bg-zinc-800 rounded-3xl mb-6 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80" alt="AI Article" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="flex gap-3 mb-4 text-xs font-bold text-brand-500"><span>AI AUTOMATION</span> • <span>5 MIN READ</span></div>
+                    <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-500 transition-colors">How LLMs are Reshaping the Modern Web Agency</h3>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-sm">Discover how we integrate generative AI into our workflows to deliver projects 3x faster without sacrificing quality.</p>
+                </a>
+                <a href="#" class="group interactive reveal" style="transition-delay: 100ms;">
+                    <div class="aspect-[16/9] bg-zinc-200 dark:bg-zinc-800 rounded-3xl mb-6 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&q=80" alt="Design Article" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="flex gap-3 mb-4 text-xs font-bold text-brand-500"><span>UI/UX DESIGN</span> • <span>4 MIN READ</span></div>
+                    <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-500 transition-colors">The Psychology of Dark Mode in Enterprise Apps</h3>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-sm">An in-depth look at why users prefer dark interfaces for B2B dashboards and how to design them perfectly.</p>
+                </a>
+                <a href="#" class="group interactive reveal" style="transition-delay: 200ms;">
+                    <div class="aspect-[16/9] bg-zinc-200 dark:bg-zinc-800 rounded-3xl mb-6 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80" alt="Dev Article" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="flex gap-3 mb-4 text-xs font-bold text-brand-500"><span>WEB DEV</span> • <span>7 MIN READ</span></div>
+                    <h3 class="text-2xl font-bold mb-3 group-hover:text-brand-500 transition-colors">Next.js vs React: Choosing Your Tech Stack in 2026</h3>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-sm">A technical breakdown of when to use a meta-framework versus a standard SPA for your next major product.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING & PLANS -->
+    <section id="pricing" class="py-32 px-6 bg-zinc-100/50 dark:bg-zinc-900/20 border-y border-zinc-200 dark:border-zinc-800/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Transparent Agency Pricing</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 text-lg max-w-2xl mx-auto">No hidden fees. Choose a monthly retainer that fits your growth stage.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <!-- Essential -->
+                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2rem] p-8 reveal">
+                    <h3 class="text-2xl font-bold mb-2">Essential Design</h3>
+                    <p class="text-zinc-500 text-sm mb-6">For startups needing branding & UI.</p>
+                    <div class="mb-6"><span class="text-4xl font-black">$2,499</span><span class="text-zinc-500">/mo</span></div>
+                    <button onclick="window.openModal()" class="w-full py-4 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-xl font-bold mb-8 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors interactive">Choose Essential</button>
+                    <ul class="space-y-4 text-sm text-zinc-600 dark:text-zinc-300">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> Graphic Design & Branding</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> UI/UX Web Design</li>
+                        <li class="flex items-center gap-3 text-zinc-400"><i data-lucide="x" class="w-5 h-5"></i> Web Development</li>
+                    </ul>
+                </div>
+                <!-- Pro -->
+                <div class="bg-zinc-900 dark:bg-zinc-800 border border-brand-500 rounded-[2rem] p-8 md:p-10 transform scale-100 md:scale-105 shadow-2xl relative reveal" style="transition-delay: 100ms;">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest pointer-events-none">Most Popular</div>
+                    <h3 class="text-2xl font-bold mb-2 text-white">Pro Full-Stack</h3>
+                    <p class="text-zinc-400 text-sm mb-6">For scaling brands needing design + code.</p>
+                    <div class="mb-6 text-white"><span class="text-5xl font-black">$5,999</span><span class="text-zinc-400">/mo</span></div>
+                    <button onclick="window.openModal()" class="w-full py-4 bg-brand-500 text-white rounded-xl font-bold mb-8 hover:bg-brand-600 transition-colors shadow-lg shadow-brand-500/30 interactive">Choose Pro</button>
+                    <ul class="space-y-4 text-sm text-zinc-300">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-400"></i> Everything in Essential</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-400"></i> Full Frontend & Backend Dev</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-400"></i> Basic Video Editing</li>
+                    </ul>
+                </div>
+                <!-- Enterprise -->
+                <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2rem] p-8 reveal" style="transition-delay: 200ms;">
+                    <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+                    <p class="text-zinc-500 text-sm mb-6">Full digital transformation & AI.</p>
+                    <div class="mb-6"><span class="text-4xl font-black">Custom</span></div>
+                    <button onclick="window.openModal()" class="w-full py-4 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-white rounded-xl font-bold mb-8 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors interactive">Contact Sales</button>
+                    <ul class="space-y-4 text-sm text-zinc-600 dark:text-zinc-300">
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> Everything in Pro</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> Custom AI Agents & LLMs</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check" class="w-5 h-5 text-brand-500"></i> Cinema-grade Video</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM SECTION -->
+    <section class="py-32 px-6">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center reveal">The Minds Behind Pixel</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="reveal interactive group"><div class="aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-3xl mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" alt="CEO" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"></div><h4 class="font-bold text-lg">Alex Mercer</h4><p class="text-brand-500 text-sm">Founder & CEO</p></div>
+                <div class="reveal interactive group" style="transition-delay: 100ms;"><div class="aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-3xl mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Lead Designer" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"></div><h4 class="font-bold text-lg">Sarah Chen</h4><p class="text-brand-500 text-sm">Head of Design</p></div>
+                <div class="reveal interactive group" style="transition-delay: 200ms;"><div class="aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-3xl mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80" alt="Lead Engineer" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"></div><h4 class="font-bold text-lg">David Okoye</h4><p class="text-brand-500 text-sm">Lead Engineer</p></div>
+                <div class="reveal interactive group" style="transition-delay: 300ms;"><div class="aspect-square bg-zinc-200 dark:bg-zinc-800 rounded-3xl mb-4 overflow-hidden"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="AI Specialist" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"></div><h4 class="font-bold text-lg">Elena Rostova</h4><p class="text-brand-500 text-sm">AI Integrations</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SLIDER -->
+    <section class="py-32 px-6 bg-zinc-950 text-white rounded-[3rem] mx-4 md:mx-10 my-10 overflow-hidden relative">
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 30px 30px;"></div>
+        <div class="max-w-5xl mx-auto relative z-10 text-center">
+            <i data-lucide="quote" class="w-16 h-16 text-brand-500 mx-auto mb-8 opacity-50"></i>
+            <div id="testimonial-slider" class="overflow-hidden relative h-56 md:h-48">
+                <div class="testimonial-slide absolute inset-0 transition-opacity duration-500 opacity-100">
+                    <p class="text-2xl md:text-4xl font-light leading-relaxed mb-8">"Pixel Studio didn't just redesign our website; they re-engineered our entire digital presence. Our conversion rate doubled in 30 days."</p>
+                    <div class="font-bold text-lg">Michael T.</div><div class="text-brand-500 text-sm">CMO, TechFlow</div>
+                </div>
+                <div class="testimonial-slide absolute inset-0 transition-opacity duration-500 opacity-0 pointer-events-none">
+                    <p class="text-2xl md:text-4xl font-light leading-relaxed mb-8">"Their AI automation implementation saved our support team 40 hours a week. Absolute game-changers."</p>
+                    <div class="font-bold text-lg">Jessica W.</div><div class="text-brand-500 text-sm">Director of Ops, ScaleUp</div>
+                </div>
+            </div>
+            <div class="flex justify-center mt-8">
+                <button onclick="window.nextTestimonial()" class="w-10 h-10 rounded-full border border-zinc-700 flex items-center justify-center hover:bg-zinc-800 interactive"><i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PIXEL AI LABS (Gemini Integration) -->
+    <section id="ai-labs" class="py-32 px-6 relative border-y border-zinc-200 dark:border-zinc-800/50 bg-zinc-100/50 dark:bg-zinc-900/20">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16 reveal">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-600 dark:text-brand-400 text-xs font-bold mb-6 uppercase tracking-widest pointer-events-none">
+                    <i data-lucide="sparkles" class="w-3 h-3"></i> Pixel AI Labs
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Experience our AI Capabilities</h2>
+                <p class="text-zinc-600 dark:text-zinc-400 text-lg max-w-2xl mx-auto">Test drive our custom Gemini-powered micro-tools designed to accelerate the creative process.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Tool 1: Strategist -->
+                <div class="glass-panel rounded-[2rem] p-8 shadow-xl reveal bg-white dark:bg-zinc-950">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold">Project Strategist</h3>
+                        <i data-lucide="brain-circuit" class="w-6 h-6 text-brand-500"></i>
+                    </div>
+                    <textarea id="ai-prompt-input" rows="3" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-zinc-900 dark:text-white focus:outline-none focus:border-brand-500 mb-4 text-sm interactive" placeholder="e.g., A vegan coffee shop that feels cyberpunk..."></textarea>
+                    <button id="generate-btn" class="w-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 py-3 rounded-xl font-bold interactive">Generate Brief ✨</button>
+                    <div id="ai-output-container" class="hidden border-t border-zinc-200 dark:border-zinc-800 pt-4 mt-4">
+                        <div id="ai-loading" class="hidden text-center text-xs text-brand-500 animate-pulse py-4">Drafting Strategy...</div>
+                        <div id="ai-response-content" class="text-sm text-zinc-700 dark:text-zinc-300"></div>
+                    </div>
+                </div>
+
+                <!-- Tool 2: Palette -->
+                <div class="glass-panel rounded-[2rem] p-8 shadow-xl reveal bg-white dark:bg-zinc-950" style="transition-delay: 100ms;">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold">Vibe-to-Palette</h3>
+                        <i data-lucide="palette" class="w-6 h-6 text-brand-500"></i>
+                    </div>
+                    <input type="text" id="palette-input" class="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 text-zinc-900 dark:text-white focus:outline-none focus:border-brand-500 mb-4 text-sm interactive" placeholder="e.g., Rainy neon Tokyo night">
+                    <button id="palette-btn" class="w-full bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 py-3 rounded-xl font-bold interactive">Mix Colors ✨</button>
+                    <div id="palette-output-container" class="hidden border-t border-zinc-200 dark:border-zinc-800 pt-4 mt-4">
+                        <div id="palette-loading" class="hidden text-center text-xs text-brand-500 animate-pulse py-4">Extracting Colors...</div>
+                        <div id="palette-colors" class="grid grid-cols-5 gap-1 h-20 rounded-xl overflow-hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ ACCORDION -->
+    <section class="py-32 px-6">
+        <div class="max-w-3xl mx-auto reveal">
+            <h2 class="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+            <div class="space-y-4">
+                <div class="border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden bg-white dark:bg-zinc-950">
+                    <button class="faq-btn w-full p-6 text-left flex justify-between items-center font-bold interactive">
+                        What is your typical turnaround time? <i data-lucide="chevron-down" class="w-5 h-5 transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-zinc-600 dark:text-zinc-400 text-sm">For standard web design and development, typical turnaround is 4-6 weeks. Enterprise retainers are continuous.</div>
+                </div>
+                <div class="border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden bg-white dark:bg-zinc-950">
+                    <button class="faq-btn w-full p-6 text-left flex justify-between items-center font-bold interactive">
+                        How does the pricing structure work? <i data-lucide="chevron-down" class="w-5 h-5 transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-zinc-600 dark:text-zinc-400 text-sm">We offer monthly retainers for ongoing product development, or flat-rate project fees for one-off builds. We require 50% upfront for flat-rate projects.</div>
+                </div>
+                <div class="border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden bg-white dark:bg-zinc-950">
+                    <button class="faq-btn w-full p-6 text-left flex justify-between items-center font-bold interactive">
+                        Do you work with startups? <i data-lucide="chevron-down" class="w-5 h-5 transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-zinc-600 dark:text-zinc-400 text-sm">Absolutely. We have specific packages designed to help funded startups get their MVP to market rapidly.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA & FOOTER -->
+    <footer class="pt-20 pb-10 px-6 border-t border-zinc-200 dark:border-zinc-800 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center pb-20 mb-10 reveal border-b border-zinc-200 dark:border-zinc-800">
+                <h2 class="text-5xl md:text-8xl font-bold mb-8 md:mb-0">Have an idea? <br> <span class="text-brand-500">Let's build it.</span></h2>
+                <div class="magnetic-wrap">
+                    <button onclick="window.openModal()" class="magnetic-btn interactive w-40 h-40 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-full flex flex-col items-center justify-center font-bold text-lg hover:scale-105 transition-transform shadow-2xl">
+                        Start Project <i data-lucide="arrow-up-right" class="mt-2 w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 pb-20 reveal">
+                <div class="md:col-span-4">
+                    <h3 class="text-2xl font-bold mb-4">Join our Newsletter</h3>
+                    <p class="text-zinc-600 dark:text-zinc-400 text-sm mb-4">Get the latest insights on design and AI delivered to your inbox.</p>
+                    <div class="flex gap-2">
+                        <input type="email" placeholder="Email Address" class="w-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-brand-500 interactive">
+                        <button onclick="alert('Subscribed to the Pixel Studio Newsletter!')" class="bg-brand-500 text-white px-6 py-3 rounded-xl font-bold text-sm interactive hover:bg-brand-600 transition-colors">Join</button>
+                    </div>
+                </div>
+                <div class="md:col-span-2 md:col-start-7">
+                    <h4 class="font-bold mb-4">Services</h4>
+                    <ul class="space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+                        <li><a href="#services" class="hover:text-brand-500 interactive nav-link">UI/UX Design</a></li>
+                        <li><a href="#services" class="hover:text-brand-500 interactive nav-link">Web Development</a></li>
+                        <li><a href="#services" class="hover:text-brand-500 interactive nav-link">AI Automation</a></li>
+                    </ul>
+                </div>
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4">Company</h4>
+                    <ul class="space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+                        <li><a href="#" class="hover:text-brand-500 interactive">About Us</a></li>
+                        <li><a href="#portfolio" class="hover:text-brand-500 interactive nav-link">Portfolio</a></li>
+                        <li><a href="#insights" class="hover:text-brand-500 interactive nav-link">Insights</a></li>
+                    </ul>
+                </div>
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+                        <li><a href="#" class="hover:text-brand-500 interactive">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-brand-500 interactive">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center text-sm font-semibold text-zinc-500 dark:text-zinc-400 gap-6">
+                <div class="flex items-center gap-2 interactive cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-6 h-6 bg-zinc-900 dark:bg-white rounded-md flex items-center justify-center">
+                        <i data-lucide="layers" class="w-3 h-3 text-white dark:text-zinc-900"></i>
+                    </div>
+                    <span class="text-zinc-900 dark:text-white">Pixel Studio &copy; 2026</span>
+                </div>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-brand-500 interactive">Instagram</a>
+                    <a href="#" class="hover:text-brand-500 interactive">Dribbble</a>
+                    <a href="#" class="hover:text-brand-500 interactive">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCROLL TO TOP FAB -->
+    <button id="scroll-to-top" onclick="window.scrollTo(0,0)" class="fixed bottom-6 left-6 z-[90] w-12 h-12 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-full shadow-xl flex items-center justify-center hover:scale-110 transition-all opacity-0 translate-y-10 pointer-events-none interactive">
+        <i data-lucide="arrow-up" class="w-5 h-5"></i>
+    </button>
+
+    <!-- Scripts: Smooth Scroll, UI Logic, Firebase, and Gemini -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <script type="module">
+        // ----------------------------------------------------
+        // 1. FIREBASE SETUP (Lead Capture)
+        // ----------------------------------------------------
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        let db, auth, appId;
+        try {
+            const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+            
+            const initAuth = async () => {
+                try {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                } catch(e) { console.warn("Firebase auth warning", e); }
+            };
+            initAuth();
+        } catch(e) { console.warn("Firebase not configured in this environment."); }
+
+        document.getElementById('lead-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('lead-submit-btn');
+            const status = document.getElementById('lead-status');
+            btn.innerHTML = '<div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div> Sending...';
+            
+            try {
+                if(!auth || !auth.currentUser) throw new Error("Not authenticated");
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'contact_leads'), {
+                    name: document.getElementById('lead-name').value,
+                    email: document.getElementById('lead-email').value,
+                    service: document.getElementById('lead-service').value,
+                    timestamp: new Date().toISOString()
+                });
+                status.textContent = "Request received securely. We'll be in touch!";
+                status.className = "text-center text-sm font-bold mt-2 text-brand-500 block";
+                e.target.reset();
+                setTimeout(() => window.closeModal(), 3000);
+            } catch(error) {
+                status.textContent = "Error saving request. Please try again.";
+                status.className = "text-center text-sm font-bold mt-2 text-red-500 block";
+            } finally {
+                btn.innerHTML = 'Send Secure Request';
+            }
+        });
+
+        // ----------------------------------------------------
+        // 2. GEMINI API: Pixel Bot Chat & AI Labs
+        // ----------------------------------------------------
+        const apiKey = ""; 
+        async function fetchGemini(promptText, systemText = "", asJson = false) {
+            const delays = [1000, 2000, 4000, 8000, 16000];
+            const payload = { contents: promptText };
+            if(systemText) payload.systemInstruction = { parts: [{ text: systemText }] };
+            if(asJson) {
+                payload.generationConfig = { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: { colors: { type: "ARRAY", items: { type: "OBJECT", properties: { hex: { type: "STRING" }, name: { type: "STRING" } } } } } } };
+            }
+            
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+                    });
+                    if (!res.ok) throw new Error("HTTP " + res.status);
+                    const data = await res.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text;
+                } catch (err) {
+                    if (i === 4) throw err;
+                    await new Promise(r => setTimeout(r, delays[i]));
+                }
+            }
+        }
+
+        let chatHistory = [];
+        document.getElementById('chat-send').addEventListener('click', async () => {
+            const input = document.getElementById('chat-input');
+            const val = input.value.trim();
+            if(!val) return;
+            
+            const msgContainer = document.getElementById('chat-messages');
+            msgContainer.innerHTML += `<div class="bg-brand-500 p-3 rounded-2xl rounded-tr-sm text-white self-end max-w-[85%] ml-auto mb-2">${val}</div>`;
+            input.value = '';
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+
+            chatHistory.push({ role: "user", parts: [{ text: val }] });
+            
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = "bg-zinc-100 dark:bg-zinc-900 p-3 rounded-2xl rounded-tl-sm text-zinc-500 self-start animate-pulse mb-2";
+            typingIndicator.textContent = "Pixel Bot is typing...";
+            msgContainer.appendChild(typingIndicator);
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+
+            try {
+                const sysPrompt = "You are 'Pixel Bot', the friendly AI assistant for Pixel Studio (a premium digital agency). Answer questions about our web dev, design, video, and AI automation. Be concise, under 3 sentences.";
+                const response = await fetchGemini(chatHistory, sysPrompt);
+                
+                chatHistory.push({ role: "model", parts: [{ text: response }] });
+                typingIndicator.remove();
+                msgContainer.innerHTML += `<div class="bg-zinc-100 dark:bg-zinc-900 p-3 rounded-2xl rounded-tl-sm text-zinc-800 dark:text-zinc-200 self-start max-w-[85%] mb-2">${response}</div>`;
+            } catch(e) {
+                typingIndicator.remove();
+                msgContainer.innerHTML += `<div class="bg-red-500/10 text-red-500 p-3 rounded-2xl self-start text-xs mb-2">Connection error.</div>`;
+            }
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+        });
+        document.getElementById('chat-input').addEventListener('keypress', (e) => { if(e.key === 'Enter') document.getElementById('chat-send').click(); });
+
+        document.getElementById('generate-btn').addEventListener('click', async () => {
+            const prompt = document.getElementById('ai-prompt-input').value;
+            if(!prompt) return;
+            document.getElementById('ai-output-container').classList.remove('hidden');
+            document.getElementById('ai-loading').classList.remove('hidden');
+            document.getElementById('ai-response-content').innerHTML = "";
+            
+            try {
+                const sys = "You are Lead Strategist for Pixel Studio. Write a 3-part brief: 1. Creative Vision. 2. Recommended Services (e.g., Web Dev, UI/UX, Video). 3. CTA. Use simple HTML tags like <b> and <br>.";
+                const res = await fetchGemini([{parts:[{text: prompt}]}], sys);
+                document.getElementById('ai-response-content').innerHTML = res;
+            } catch(e) {
+                document.getElementById('ai-response-content').innerHTML = "Error generating strategy.";
+            } finally { document.getElementById('ai-loading').classList.add('hidden'); }
+        });
+
+        document.getElementById('palette-btn').addEventListener('click', async () => {
+            const vibe = document.getElementById('palette-input').value;
+            if(!vibe) return;
+            document.getElementById('palette-output-container').classList.remove('hidden');
+            document.getElementById('palette-loading').classList.remove('hidden');
+            const colorBox = document.getElementById('palette-colors');
+            colorBox.innerHTML = "";
+            
+            try {
+                const resText = await fetchGemini([{parts:[{text:`Create 5 colors for: ${vibe}`}]}], "", true);
+                const data = JSON.parse(resText);
+                data.colors.forEach((c, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'w-full h-full transform hover:scale-110 cursor-pointer flex items-center justify-center opacity-0';
+                    div.style.backgroundColor = c.hex;
+                    div.title = c.name + " (" + c.hex + ")";
+                    div.style.animation = `fadeUp 0.5s ease forwards ${i*100}ms`;
+                    div.onclick = () => { document.execCommand('copy'); navigator.clipboard.writeText(c.hex).catch(()=>{}); };
+                    colorBox.appendChild(div);
+                });
+            } catch(e) { colorBox.innerHTML = "<span class='text-xs text-red-500'>Error generating colors.</span>"; } 
+            finally { document.getElementById('palette-loading').classList.add('hidden'); }
+        });
+
+        // ----------------------------------------------------
+        // 3. UI, ANIMATIONS, & GLOBALS
+        // ----------------------------------------------------
+        
+        window.openModal = () => { document.getElementById('contact-modal').classList.remove('hidden'); setTimeout(()=>document.getElementById('contact-content').classList.remove('scale-95','opacity-0'),10); };
+        window.closeModal = () => { document.getElementById('contact-content').classList.add('scale-95','opacity-0'); setTimeout(()=>document.getElementById('contact-modal').classList.add('hidden'),300); };
+        window.openVideoModal = () => { document.getElementById('video-modal').classList.remove('hidden'); setTimeout(()=>document.getElementById('video-content').classList.remove('scale-95','opacity-0'),10); };
+        window.closeVideoModal = () => { document.getElementById('video-content').classList.add('scale-95','opacity-0'); setTimeout(()=>document.getElementById('video-modal').classList.add('hidden'),300); };
+        window.toggleChat = () => { document.getElementById('chat-window').classList.toggle('hidden'); document.getElementById('chat-window').classList.toggle('flex'); };
+        
+        const hour = new Date().getHours();
+        document.getElementById('dynamic-greeting').textContent = hour < 12 ? "Good Morning, Let's Create." : hour < 18 ? "Good Afternoon, Let's Create." : "Good Evening, Let's Create.";
+
+        window.addEventListener('load', () => {
+            const pl = document.getElementById('preloader');
+            setTimeout(() => { pl.style.opacity = '0'; setTimeout(()=>pl.style.visibility = 'hidden', 800); }, 500);
+        });
+
+        // Setup Lenis Smooth Scroll
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+        
+        // Ensure Nav links use Lenis to prevent scroll jumps
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                lenis.scrollTo(targetId, { offset: -80 }); // -80px to account for the sticky navbar height
+            });
+        });
+
+        lucide.createIcons();
+
+        const themeBtn = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        if (localStorage.theme === 'light') html.classList.remove('dark');
+        themeBtn.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
+        });
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.testimonial-slide');
+        window.nextTestimonial = () => {
+            slides[currentSlide].classList.replace('opacity-100', 'opacity-0');
+            slides[currentSlide].classList.add('pointer-events-none');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.replace('opacity-0', 'opacity-100');
+            slides[currentSlide].classList.remove('pointer-events-none');
+        };
+
+        document.querySelectorAll('.faq-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('i');
+                const isHidden = content.classList.contains('hidden');
+                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.faq-btn i').forEach(i => i.style.transform = 'rotate(0deg)');
+                if(isHidden) { content.classList.remove('hidden'); icon.style.transform = 'rotate(180deg)'; }
+            });
+        });
+
+        // 1. Setup Cursor Variables
+        const dot = document.getElementById('cursor-dot');
+        const outline = document.getElementById('cursor-outline');
+        let cx=window.innerWidth/2, cy=window.innerHeight/2, ox=cx, oy=cy;
+        window.addEventListener('mousemove', e => { cx=e.clientX; cy=e.clientY; }, { passive: true });
+        
+        const attachHovers = () => { document.querySelectorAll('.interactive, a, button, input, textarea, select').forEach(el => { el.addEventListener('mouseenter', ()=>document.body.classList.add('cursor-hover')); el.addEventListener('mouseleave', ()=>document.body.classList.remove('cursor-hover')); }); };
+        attachHovers();
+
+        const obs = new IntersectionObserver(e => e.forEach(en => { 
+            if(en.isIntersecting) {
+                en.target.classList.add('active');
+                obs.unobserve(en.target); // Stop observing to instantly free up CPU
+            }
+        }), { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+        // 2. Setup Canvas Variables
+        const cvs = document.getElementById('interactive-canvas');
+        const ctx = cvs.getContext('2d');
+        let w, h, pts;
+        function initCvs() {
+            w = cvs.width = window.innerWidth; h = cvs.height = window.innerHeight;
+            // Heavily reduced particle count for absolute performance
+            pts = Array.from({length: w<768?15:35}, () => ({ x:Math.random()*w, y:Math.random()*h, vx:(Math.random()-.5)*.5, vy:(Math.random()-.5)*.5, r:Math.random()*2+1 }));
+        }
+        window.addEventListener('resize', initCvs); initCvs();
+
+        // 3. MASTER ANIMATION LOOP WITH SCROLL PAUSING
+        let isScrolling = false;
+        let scrollTimeout;
+
+        window.addEventListener('scroll', () => {
+            isScrolling = true;
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => { isScrolling = false; }, 150);
+            
+            // Navbar UI Updates
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) { nav.classList.add('py-2'); nav.classList.remove('py-4'); } 
+            else { nav.classList.add('py-4'); nav.classList.remove('py-2'); }
+
+            // Scroll to Top UI
+            const topBtn = document.getElementById('scroll-to-top');
+            if(window.scrollY > 500) { topBtn.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none'); }
+            else { topBtn.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none'); }
+        }, { passive: true });
+
+        function masterRAF(time) {
+            // A. Smooth Scroll
+            lenis.raf(time);
+
+            // B. Hardware Accelerated Cursor
+            ox+=(cx-ox)*0.15; oy+=(cy-oy)*0.15; 
+            dot.style.transform = `translate3d(calc(${cx}px - 50%), calc(${cy}px - 50%), 0)`;
+            outline.style.transform = `translate3d(calc(${ox}px - 50%), calc(${oy}px - 50%), 0)`;
+
+            // C. Canvas Particles (PAUSED DURING SCROLL FOR MAX PERFORMANCE)
+            if (!isScrolling) {
+                ctx.clearRect(0,0,w,h);
+                const isDark = html.classList.contains('dark');
+                const cRgb = isDark ? '255,255,255' : '20,184,166';
+                ctx.fillStyle = `rgba(${cRgb},0.4)`;
+
+                for(let i=0; i<pts.length; i++) {
+                    let p = pts[i];
+                    p.x+=p.vx; p.y+=p.vy;
+                    if(p.x<0||p.x>w) p.vx*=-1; if(p.y<0||p.y>h) p.vy*=-1;
+                    
+                    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+                    
+                    // Optimized distance check without Math.hypot (squared distance)
+                    const dxM = p.x - cx;
+                    const dyM = p.y - cy;
+                    const distMSq = dxM*dxM + dyM*dyM;
+                    
+                    if(distMSq < 22500) { // 150^2
+                        ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(cx,cy);
+                        ctx.strokeStyle=`rgba(${cRgb},${1-Math.sqrt(distMSq)/150})`; ctx.stroke();
+                    }
+
+                    for(let j=i+1; j<pts.length; j++) {
+                        const dx = p.x - pts[j].x;
+                        const dy = p.y - pts[j].y;
+                        const distSq = dx*dx + dy*dy;
+                        if(distSq < 10000) { // 100^2
+                            ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(pts[j].x,pts[j].y);
+                            ctx.strokeStyle=`rgba(${cRgb},${(1-Math.sqrt(distSq)/100)*0.2})`; ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            requestAnimationFrame(masterRAF);
+        }
+        requestAnimationFrame(masterRAF);
+    </script>
+</body>
+</html>
