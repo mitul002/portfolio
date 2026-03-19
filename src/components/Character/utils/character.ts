@@ -11,11 +11,8 @@ const setCharacter = (
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
   
-  // Set the decoder path with base URL - GitHub Pages friendly
-  const baseUrl = window.location.href.includes('/portfolio/') 
-    ? '/portfolio/draco/' 
-    : '/draco/';
-  dracoLoader.setDecoderPath(baseUrl);
+  // Use npm package path which bypasses MIME type issues on GitHub Pages
+  dracoLoader.setDecoderPath("https://www.jsdelivr.net/npm/draco3d@1.4.12/draco_decoder/");
   loader.setDRACOLoader(dracoLoader);
 
   const loadCharacter = () => {
