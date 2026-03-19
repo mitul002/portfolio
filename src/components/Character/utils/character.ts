@@ -10,7 +10,7 @@ const setCharacter = (
 ) => {
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/draco/");
+  dracoLoader.setDecoderPath("/portfolio/draco/");
   loader.setDRACOLoader(dracoLoader);
 
   const loadCharacter = () => {
