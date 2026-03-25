@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
-import Lenis from "@studio-freight/lenis";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { MdArrowRight } from "react-icons/md";
 import "./styles/Navbar.css";
 
-gsap.registerPlugin(ScrollTrigger);
-export let smoother: any = null;
+gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
+export let smoother: ScrollSmoother;
 
 interface NavbarProps {
   openModal: () => void;
@@ -15,28 +15,15 @@ interface NavbarProps {
 
 const Navbar = ({ openModal }: NavbarProps) => {
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: 'vertical',
-      smoothWheel: true,
+    smoother = ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
+      smooth: 1.7,
+      speed: 1.7,
+      effects: true,
+      autoResize: true,
+      ignoreMobileResize: true,
     });
-
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
-
-    smoother = {
-      paused: (p: boolean) => (p ? lenis.stop() : lenis.start()),
-      scrollTop: (y?: number) => {
-        if (y !== undefined) window.scrollTo(0, y);
-      },
-      scrollTo: (target: string | number) => {
-        lenis.scrollTo(target);
-      },
-    };
 
     smoother.scrollTop(0);
     smoother.paused(true);
@@ -49,11 +36,13 @@ const Navbar = ({ openModal }: NavbarProps) => {
           e.preventDefault();
           let elem = e.currentTarget as HTMLAnchorElement;
           let section = elem.getAttribute("data-href");
-          if (section) smoother.scrollTo(section);
+          smoother.scrollTo(section, true, "top top");
         }
       });
     });
-    
+    window.addEventListener("resize", () => {
+      ScrollSmoother.refresh(true);
+    });
   }, []);
 
   return (
