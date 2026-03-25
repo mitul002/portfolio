@@ -63,10 +63,12 @@ export function setCharTimeline(
   let neckBone = character?.getObjectByName("spine005");
   if (window.innerWidth > 1024) {
     if (character) {
+      const isLaptop = window.innerWidth <= 1600;
+
       tl1
         .fromTo(character.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
         .to(camera.position, { z: 22 }, 0)
-        .fromTo(".character-model", { x: 0 }, { x: "-25%", duration: 1 }, 0)
+        .fromTo(".character-model", { x: 0 }, { x: isLaptop ? "-35%" : "-25%", duration: 1 }, 0)
         .to(".landing-container", { opacity: 0, duration: 0.4 }, 0)
         .to(".landing-container", { y: "40%", duration: 0.8 }, 0)
         .fromTo(".about-me", { y: "-50%" }, { y: "0%" }, 0);
@@ -82,13 +84,13 @@ export function setCharTimeline(
         .fromTo(
           ".character-model",
           { pointerEvents: "inherit" },
-          { pointerEvents: "none", x: "-12%", delay: 2, duration: 5 },
+          { pointerEvents: "none", x: isLaptop ? "-40%" : "-12%", delay: 2, duration: 5 },
           0
         )
         .to(character.rotation, { y: 0.92, x: 0.12, delay: 3, duration: 3 }, 0)
-        .to(neckBone!.rotation, { x: 0.6, delay: 2, duration: 3 }, 0)
-        .to(monitor.material, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
-        .to(screenLight.material, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
+        .to(neckBone?.rotation || {}, { x: 0.6, delay: 2, duration: 3 }, 0)
+        .to(monitor?.material || {}, { opacity: 1, duration: 0.8, delay: 3.2 }, 0)
+        .to(screenLight?.material || {}, { opacity: 1, duration: 0.8, delay: 4.5 }, 0)
         .fromTo(
           ".what-box-in",
           { display: "none" },
