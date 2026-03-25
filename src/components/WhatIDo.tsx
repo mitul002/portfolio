@@ -33,7 +33,7 @@ const WhatIDo = () => {
         <div className="what-box">
           <h2 className="title">
             <div>WHAT</div>
-            <div>I DO</div>
+            <div><span className="accent-text">I DO</span></div>
           </h2>
         </div>
         <div className="what-box">
