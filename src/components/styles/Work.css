@@ -401,9 +401,7 @@
     max-height: 200px;
   }
   .carousel-arrow {
-    width: 30px;
-    height: 30px;
-    font-size: 14px;
+    display: none;
   }
   .carousel-arrow-left {
     left: 0px;
