@@ -254,6 +254,17 @@
   }
 }
 
+/* Hide hamburger on desktop */
+@media only screen and (min-width: 901px) {
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .mobile-menu-overlay {
+    display: none !important;
+  }
+}
+
 /* Hide mobile menu on desktop */
 @media only screen and (min-width: 901px) {
   .mobile-menu-overlay {
