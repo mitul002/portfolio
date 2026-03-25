@@ -67,7 +67,7 @@
 .what-box-in {
   flex-direction: column;
   height: 620px;
-  margin-left: 200px;
+  margin-left: 10vw;
   position: relative;
   display: flex;
 }
