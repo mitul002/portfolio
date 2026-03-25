@@ -9,7 +9,7 @@ const Landing = ({ children }: PropsWithChildren) => {
           <div className="landing-intro">
             <h2>Hello! I'm</h2>
             <h1 style={{ whiteSpace: 'nowrap', marginBottom: '15px' }}>
-              Md. Hasin almas
+              Md. Hasin Almas
               <br />
               <span style={{ color: '#5eead4', fontWeight: 'bold' }}>MITUL</span>
             </h1>
@@ -25,16 +25,16 @@ const Landing = ({ children }: PropsWithChildren) => {
               <div className="skill-prefix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Web</div>
               <div className="skill-prefix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>UI/UX</div>
               <div className="skill-prefix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Video</div>
-              <div className="skill-prefix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Sound</div>
               <div className="skill-prefix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Automation</div>
+              <div className="skill-prefix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Sound</div>
             </h2>
             <h2>
               <div className="skill-suffix-item">Designer</div>
               <div className="skill-suffix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Developer</div>
               <div className="skill-suffix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Designer</div>
               <div className="skill-suffix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Editor</div>
-              <div className="skill-suffix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Designer</div>
               <div className="skill-suffix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Engineer</div>
+              <div className="skill-suffix-item" style={{ position: 'absolute', top: 0, opacity: 0 }}>Designer</div>
             </h2>
           </div>
         </div>

@@ -9,18 +9,18 @@ const Career = () => {
         </h2>
 
         {/* Stats Box */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '30px', marginTop: '40px', marginBottom: '80px', paddingBottom: '40px', borderBottom: '1px solid rgba(255,255,255,0.1)', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', marginTop: '40px', marginBottom: '60px', paddingBottom: '30px', borderBottom: '1px solid rgba(255,255,255,0.1)', width: '100%' }}>
           <div>
-            <h4 style={{ color: 'var(--accentColor)', fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 700, margin: '0 0 5px 0', fontFamily: 'Geist, sans-serif', lineHeight: 1 }}>5+</h4>
-            <p style={{ margin: 0, fontSize: '16px', color: '#a1a1aa', letterSpacing: '1px' }}>Years Experience</p>
+            <h4 style={{ color: 'var(--accentColor)', fontSize: 'clamp(32px, 8vw, 64px)', fontWeight: 700, margin: '0 0 5px 0', fontFamily: 'Geist, sans-serif', lineHeight: 1 }}>5+</h4>
+            <p style={{ margin: 0, fontSize: 'clamp(11px, 3.5vw, 16px)', color: '#a1a1aa', letterSpacing: '1px' }}>Years Experience</p>
           </div>
           <div>
-            <h4 style={{ color: 'var(--accentColor)', fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 700, margin: '0 0 5px 0', fontFamily: 'Geist, sans-serif', lineHeight: 1 }}>50+</h4>
-            <p style={{ margin: 0, fontSize: '16px', color: '#a1a1aa', letterSpacing: '1px' }}>Projects Completed</p>
+            <h4 style={{ color: 'var(--accentColor)', fontSize: 'clamp(32px, 8vw, 64px)', fontWeight: 700, margin: '0 0 5px 0', fontFamily: 'Geist, sans-serif', lineHeight: 1 }}>50+</h4>
+            <p style={{ margin: 0, fontSize: 'clamp(11px, 3.5vw, 16px)', color: '#a1a1aa', letterSpacing: '1px' }}>Projects Completed</p>
           </div>
           <div>
-            <h4 style={{ color: 'var(--accentColor)', fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 700, margin: '0 0 5px 0', fontFamily: 'Geist, sans-serif', lineHeight: 1 }}>3+</h4>
-            <p style={{ margin: 0, fontSize: '16px', color: '#a1a1aa', letterSpacing: '1px' }}>Microstock Platforms</p>
+            <h4 style={{ color: 'var(--accentColor)', fontSize: 'clamp(32px, 8vw, 64px)', fontWeight: 700, margin: '0 0 5px 0', fontFamily: 'Geist, sans-serif', lineHeight: 1 }}>5+</h4>
+            <p style={{ margin: 0, fontSize: 'clamp(11px, 3.5vw, 16px)', color: '#a1a1aa', letterSpacing: '1px' }}>Microstock Platforms</p>
           </div>
         </div>
 

@@ -13,8 +13,12 @@ const About = () => {
         <div className="about-content" style={{ flex: 1 }}>
           <h3 className="title">About Me</h3>
           <p className="para">
-            I am <b>Md. Hasin Almas Mitul</b>, a passionate <b>professional graphic designer</b> with 5+ years of experience delivering creative solutions for brands worldwide. My expertise spans logo design, branding, illustration, and commercial design assets for top microstock platforms. <br /><br />
-            As a <b>web developer</b>, I build modern, responsive websites and web apps that blend aesthetics with functionality. I love transforming ideas into engaging digital experiences using the latest technologies. <br /><br />
+            I am <b>Md. Hasin Almas Mitul</b>, a passionate <b>professional graphic designer</b> with 5+ years of experience delivering creative solutions for brands worldwide. My expertise spans logo design, branding, illustration, and commercial design assets for top microstock platforms.
+          </p>
+          <p className="para">
+            As a <b>web developer</b>, I build modern, responsive websites and web apps that blend aesthetics with functionality. I love transforming ideas into engaging digital experiences using the latest technologies.
+          </p>
+          <p className="para">
             I am also a <b>video editor</b>, bringing stories to life through dynamic visuals and seamless editing. My goal is to help clients stand out with unique, high-quality creative work.
           </p>
         </div>

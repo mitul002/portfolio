@@ -36,7 +36,7 @@ const Pricing = ({ openModal }: PricingProps) => {
             <h3>Essential Design</h3>
             <p className="pricing-desc">For startups needing branding & UI.</p>
             <div className="pricing-amount" style={{ fontSize: '32px' }}>
-              Starts at $499
+              Starts at $199
             </div>
             <button
               className="pricing-btn"
@@ -47,7 +47,6 @@ const Pricing = ({ openModal }: PricingProps) => {
             <ul className="pricing-features">
               <li>✓ Graphic Design & Branding</li>
               <li>✓ UI/UX Web Design</li>
-              <li className="disabled">✕ Web Development</li>
             </ul>
           </div>
           <div className="pricing-card featured">
@@ -57,7 +56,7 @@ const Pricing = ({ openModal }: PricingProps) => {
               For scaling brands needing design + code.
             </p>
             <div className="pricing-amount" style={{ fontSize: '32px' }}>
-              Starts at $999
+              Starts at $499
             </div>
             <button
               className="pricing-btn primary"
@@ -68,12 +67,12 @@ const Pricing = ({ openModal }: PricingProps) => {
             <ul className="pricing-features">
               <li>✓ Everything in Essential</li>
               <li>✓ Full Frontend & Backend Dev</li>
-              <li>✓ Basic Video Editing</li>
+              <li>✓ AI Automation</li>
             </ul>
           </div>
           <div className="pricing-card">
             <h3>Enterprise</h3>
-            <p className="pricing-desc">Full digital transformation & AI.</p>
+            <p className="pricing-desc">Full digital transformation based on your needs.</p>
             <div className="pricing-amount" style={{ fontSize: '32px' }}>Custom</div>
             <button
               className="pricing-btn"
@@ -83,8 +82,8 @@ const Pricing = ({ openModal }: PricingProps) => {
             </button>
             <ul className="pricing-features">
               <li>✓ Everything in Pro</li>
-              <li>✓ Custom AI Agents & LLMs</li>
-              <li>✓ Cinema-grade Video</li>
+              <li>✓ Custom AI Agents</li>
+              <li>✓ Video Editing</li>
             </ul>
           </div>
         </div>

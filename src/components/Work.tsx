@@ -128,6 +128,7 @@ const Work = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                               data-cursor="disable"
+                              className="carousel-btn"
                               style={{
                                 display: 'inline-flex', alignItems: 'center', gap: '8px',
                                 marginTop: '20px', padding: '10px 24px',
@@ -153,6 +154,7 @@ const Work = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                               data-cursor="disable"
+                              className="carousel-btn"
                               style={{
                                 display: 'inline-flex', alignItems: 'center', gap: '8px',
                                 marginTop: '20px', padding: '10px 24px',

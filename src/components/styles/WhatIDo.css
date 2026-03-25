@@ -31,9 +31,7 @@
   font-weight: 600;
   margin-right: 10%;
   margin-bottom: 100px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: block;
 }
 
 .what-box h2 .hat-h2 {
@@ -44,12 +42,34 @@
   color: var(--accentColor);
 }
 
+/* Accent color for "I DO" */
+.accent-text {
+  color: var(--accentColor);
+}
+
+/* Desktop: show stacked two-line layout */
+.what-box h2 .what-desktop-only {
+  display: inline-flex !important;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Each word-group on its own line (desktop) */
+.what-box h2 .what-line {
+  display: block;
+}
+
+/* Mobile: hide desktop version by default */
+.what-box h2 .what-mobile-only {
+  display: none !important;
+}
+
 .what-box-in {
   flex-direction: column;
-  height: 500px;
+  height: 620px;
   margin-left: 200px;
   position: relative;
-  display: none;
+  display: flex;
 }
 
 .what-content {
@@ -64,11 +84,11 @@
 
 .what-noTouch:hover,
 .what-content-active {
-  min-height: 67%;
+  min-height: 72%;
   padding: 40px 50px;
 }
 
-.what-noTouch:hover ~ .what-content,
+.what-noTouch:hover~.what-content,
 .what-box-in:hover .what-noTouch:not(:hover),
 .what-content.what-sibling {
   min-height: 33%;
@@ -103,8 +123,20 @@
 }
 
 @keyframes whatFlicker {
-  0%, 25%, 35%, 60% { opacity: 0; }
-  30%, 50%, 40%, 100% { opacity: 1; }
+
+  0%,
+  25%,
+  35%,
+  60% {
+    opacity: 0;
+  }
+
+  30%,
+  50%,
+  40%,
+  100% {
+    opacity: 1;
+  }
 }
 
 .what-content::before,
@@ -122,7 +154,9 @@
 }
 
 @keyframes whatCorners {
-  100% { opacity: 1; }
+  100% {
+    opacity: 1;
+  }
 }
 
 .what-content::before {
@@ -199,6 +233,7 @@
   left: 50%;
   transform: translateX(-50%);
   width: 450px;
+  max-width: 100%;
 }
 
 .what-border2 {
@@ -237,7 +272,10 @@
 }
 
 @keyframes whatBorders {
-  80% { opacity: 0.8; }
+  80% {
+    opacity: 0.8;
+  }
+
   100% {
     max-height: 100%;
     max-width: 100%;
@@ -303,6 +341,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   padding: 32px;
+  box-sizing: border-box;
   transition: all 0.3s ease;
 }
 
@@ -744,31 +783,39 @@
   .what-box h2 {
     margin-right: 20%;
   }
+
   .what-box-in {
     height: 400px;
   }
+
   .what-content h3 {
     font-size: 28px;
   }
+
   .what-content {
     padding: 30px;
     width: 400px;
   }
+
   .what-content p {
     font-size: 13px;
   }
+
   .what-noTouch:hover,
   .what-content-active {
     padding: 20px 30px;
   }
-  .what-noTouch:hover ~ .what-content,
+
+  .what-noTouch:hover~.what-content,
   .what-box-in:hover .what-noTouch:not(:hover),
   .what-content.what-sibling {
     padding: 10px 30px;
   }
+
   .what-tags {
     font-size: 12px;
   }
+
   .section-title {
     font-size: 2.5rem;
   }
@@ -778,6 +825,7 @@
   .what-box-in {
     margin-left: 50px;
   }
+
   .what-content {
     width: 380px;
   }
@@ -789,28 +837,34 @@
     padding: 50px 0px;
     padding-bottom: 50px;
   }
+
   .what-box-in {
     height: 500px;
     margin-left: -50px;
   }
+
   .what-content {
     padding: 50px;
     width: 500px;
   }
+
   .what-content p {
     font-size: 14px;
   }
+
   .what-noTouch:hover,
   .what-content-active {
     min-height: 67%;
     padding: 50px;
   }
-  .what-noTouch:hover ~ .what-content,
+
+  .what-noTouch:hover~.what-content,
   .what-box-in:hover .what-noTouch:not(:hover),
   .what-content.what-sibling {
     min-height: 33%;
     padding: 10px 50px;
   }
+
   .ai-tools-grid {
     grid-template-columns: 1fr;
   }
@@ -820,64 +874,92 @@
   .whatIDO {
     flex-direction: column;
   }
+
   .what-box h2 {
     margin: 50px 0;
     font-size: 55px;
     line-height: 53px;
   }
-  .what-box:first-child {
-    justify-content: left;
+
+  /* Switch to single-line on mobile */
+  .what-box h2 .what-desktop-only {
+    display: none !important;
   }
+
+  .what-box h2 .what-mobile-only {
+    display: inline-flex !important;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .what-box:first-child {
+    justify-content: center;
+    text-align: center;
+  }
+
   .what-box:last-child {
     height: 500px;
   }
+
   .what-box {
     width: 500px;
     max-width: calc(100% - 50px);
     margin: auto;
   }
+
   .what-content {
     width: 100%;
   }
+
   .what-box-in {
     margin-left: 0px;
     height: 450px;
   }
+
   .what-content h5,
   .what-content-flex {
     opacity: 0;
     transition: 0.3s;
   }
+
   .what-noTouch:hover h5,
   .what-content-active h5,
   .what-noTouch:hover .what-content-flex,
   .what-content-active .what-content-flex {
     opacity: 1;
   }
+
   .what-content {
     padding: 30px;
   }
+
   .what-content p {
     font-size: 11px;
   }
+
   .what-noTouch:hover,
   .what-content-active {
     padding: 10px 30px;
   }
+
   .what-tags {
     font-size: 11px;
   }
-  .what-noTouch:hover ~ .what-content,
+
+  .what-noTouch:hover~.what-content,
   .what-box-in:hover .what-noTouch:not(:hover),
   .what-content.what-sibling {
     padding: 5px 30px;
   }
+
   .what-content h3 {
     font-size: 25px;
   }
+
   .pricing-card.featured {
     transform: scale(1);
   }
+
   .pricing-card.featured:hover {
     transform: translateY(-8px);
   }
@@ -885,22 +967,92 @@
 
 @media only screen and (max-width: 550px) {
   .whatIDO {
-    place-items: inherit;
-    align-items: start;
-    justify-content: left;
+    place-items: center;
+    align-items: center;
+    justify-content: center;
   }
+
   .what-box {
     max-width: calc(100% - 25px);
-    margin: 0;
+    margin: 0 auto;
   }
+
+  .what-box h2 {
+    font-size: 25px !important;
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 30px;
+    margin: 20px 0;
+  }
+
+  .what-box h2 .what-mobile-only {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .section-container {
+    padding: 0;
+    max-width: calc(100% - 25px);
+    margin: 0 auto;
+  }
+
   .section-title {
-    font-size: 2rem;
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-left: 0;
   }
+
+  .services-section {
+    padding: 20px 0;
+  }
+
   .services-grid,
   .process-grid,
   .pricing-grid {
     grid-template-columns: 1fr;
   }
+
+  .services-grid {
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .service-card {
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .service-icon {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+  }
+
+  .service-card h3 {
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .service-card p {
+    font-size: 11px;
+    line-height: 18px;
+    font-weight: 200;
+    letter-spacing: 0.7px;
+    margin-bottom: 12px;
+  }
+
+  .service-btn {
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
   .cta-button {
     width: 120px;
     height: 120px;

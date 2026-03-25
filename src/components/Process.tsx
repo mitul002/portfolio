@@ -22,19 +22,19 @@ const Process = () => {
             <div className="step-number">02</div>
             <div className="step-icon">🎨</div>
             <h3>Design</h3>
-            <p>High-fidelity UI/UX design matching your exact vision.</p>
+            <p>High Quality Branding design (Logo, Banner, etc) based on your brand identity and UI/UX design to make your website attractive and user friendly.</p>
           </div>
           <div className="process-step">
             <div className="step-number">03</div>
             <div className="step-icon">⚙️</div>
             <h3>Development</h3>
-            <p>I write clean, scalable code and integrate LLMs safely.</p>
+            <p>I write clean, scalable code so that your website can run smoothly & efficiently. I also integrate AI and automation tools to enhance functionality if needed.</p>
           </div>
           <div className="process-step">
             <div className="step-number">04</div>
             <div className="step-icon">🚀</div>
             <h3>Launch</h3>
-            <p>Thorough QA testing, deployment, and ongoing support.</p>
+            <p>After testing & QA, I deploy your website. I also provide ongoing support and maintenance if needed. </p>
           </div>
         </div>
       </div>
