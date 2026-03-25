@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
-import { MdArrowRight } from "react-icons/md";
+import { MdArrowRight, MdMenu, MdClose } from "react-icons/md";
 import "./styles/Navbar.css";
 
 gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
@@ -15,6 +15,8 @@ interface NavbarProps {
 
 const Navbar = ({ openModal }: NavbarProps) => {
   const baseUrl = import.meta.env.BASE_URL;
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   useEffect(() => {
     smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
@@ -39,12 +41,26 @@ const Navbar = ({ openModal }: NavbarProps) => {
           let section = elem.getAttribute("data-href");
           smoother.scrollTo(section, true, "top top");
         }
+        // Close mobile menu on link click
+        setIsMobileMenuOpen(false);
       });
     });
     window.addEventListener("resize", () => {
       ScrollSmoother.refresh(true);
     });
   }, []);
+
+  const navLinks = [
+    { href: "#about", text: "ABOUT" },
+    { href: "#whatido", text: "WHAT I DO" },
+    { href: "#services", text: "SERVICES" },
+    { href: "#work", text: "WORK" },
+    { href: "#process", text: "PROCESS" },
+    { href: "#pricing", text: "PRICING" },
+    { href: "#ai-lab", text: "AI LAB" },
+    { href: "#reviews", text: "REVIEWS" },
+    { href: "#contact", text: "CONTACT" },
+  ];
 
   return (
     <>
@@ -54,60 +70,52 @@ const Navbar = ({ openModal }: NavbarProps) => {
             <img src={`${baseUrl}images/M-logo.jpg`} alt="Mitul Logo" style={{height:32, width:32, borderRadius:'50%'}} />
           </a>
         </div>
-        
-        <ul>
-          <li>
-            <a data-href="#about" href="#about">
-              <HoverLinks text="ABOUT" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#whatido" href="#whatido">
-              <HoverLinks text="WHAT I DO" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#services" href="#services">
-              <HoverLinks text="SERVICES" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#work" href="#work">
-              <HoverLinks text="WORK" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#process" href="#process">
-              <HoverLinks text="PROCESS" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#pricing" href="#pricing">
-              <HoverLinks text="PRICING" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#ai-lab" href="#ai-lab">
-              <HoverLinks text="AI LAB" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#reviews" href="#reviews">
-              <HoverLinks text="REVIEWS" />
-            </a>
-          </li>
-          <li>
-            <a data-href="#contact" href="#contact">
-              <HoverLinks text="CONTACT" />
-            </a>
-          </li>
+
+        <ul className="nav-desktop">
+          {navLinks.map((link) => (
+            <li key={link.href}>
+              <a data-href={link.href} href={link.href}>
+                <HoverLinks text={link.text} />
+              </a>
+            </li>
+          ))}
         </ul>
 
         <div className="header-right">
-          <button className="btn-lets-talk" onClick={openModal} data-cursor="pointer">
+          <button className="btn-lets-talk desktop-only" onClick={openModal} data-cursor="pointer">
             Let's Talk <MdArrowRight style={{marginLeft:'4px', fontSize:'14px'}} />
           </button>
+          
+          {/* Hamburger Menu Button */}
+          <button 
+            className="hamburger-btn mobile-only"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            data-cursor="disable"
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <MdClose size={28} /> : <MdMenu size={28} />}
+          </button>
         </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
+        <nav className="mobile-menu">
+          <ul>
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} onClick={() => setIsMobileMenuOpen(false)}>
+                  {link.text}
+                </a>
+              </li>
+            ))}
+            <li>
+              <button className="btn-lets-talk mobile-lets-talk" onClick={() => { openModal(); setIsMobileMenuOpen(false); }}>
+                Let's Talk <MdArrowRight style={{marginLeft:'4px', fontSize:'14px'}} />
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
 
       <div className="landing-circle1"></div>
