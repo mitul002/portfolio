@@ -14,14 +14,18 @@ import {
 const textureLoader = new THREE.TextureLoader();
 const baseUrl = import.meta.env.BASE_URL;
 const imageUrls = [
-  `${baseUrl}images/react2.webp`,
-  `${baseUrl}images/next2.webp`,
-  `${baseUrl}images/node2.webp`,
-  `${baseUrl}images/express.webp`,
-  `${baseUrl}images/mongo.webp`,
+  `${baseUrl}images/n8n.jpg`,
+  `${baseUrl}images/html.jpg`,
+  `${baseUrl}images/css.jpg`,
   `${baseUrl}images/mysql.webp`,
+  `${baseUrl}images/python.jpg`,
+  `${baseUrl}images/photoshop.jpg`,
+  `${baseUrl}images/illustrator.jpg`,
+  `${baseUrl}images/xd.jpg`,
+  `${baseUrl}images/premiere.jpg`,
+  `${baseUrl}images/flstudio.jpg`,
   `${baseUrl}images/typescript.webp`,
-  `${baseUrl}images/javascript.webp`,
+  `${baseUrl}images/javascript.jpg`,
 ];
 const textures = imageUrls.map((url) => textureLoader.load(url));
 
