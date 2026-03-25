@@ -186,6 +186,8 @@
 .work-image {
   display: flex;
   width: 100%;
+  max-width: 650px;
+  margin-left: auto;
   justify-content: center;
 }
 
@@ -230,9 +232,13 @@
 }
 
 .work-image img {
-  max-width: 100%;
-  max-height: 400px;
-  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  background-color: #1a1a1a;
 }
 
 /* ── Responsive ── */
