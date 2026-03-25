@@ -14,6 +14,7 @@ interface NavbarProps {
 }
 
 const Navbar = ({ openModal }: NavbarProps) => {
+  const baseUrl = import.meta.env.BASE_URL;
   useEffect(() => {
     smoother = ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
@@ -50,7 +51,7 @@ const Navbar = ({ openModal }: NavbarProps) => {
       <div className="header">
         <div className="header-left">
           <a href="/#" className="navbar-title" data-cursor="disable">
-            <img src="/images/M-logo.jpg" alt="Mitul Logo" style={{height:32, width:32, borderRadius:'50%'}} />
+            <img src={`${baseUrl}images/M-logo.jpg`} alt="Mitul Logo" style={{height:32, width:32, borderRadius:'50%'}} />
           </a>
         </div>
         

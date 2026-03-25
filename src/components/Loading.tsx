@@ -5,6 +5,7 @@ import { useLoading } from "../context/LoadingProvider";
 import Marquee from "react-fast-marquee";
 
 const Loading = ({ percent }: { percent: number }) => {
+  const baseUrl = import.meta.env.BASE_URL;
   const { setIsLoading } = useLoading();
   const [loaded, setLoaded] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -46,7 +47,7 @@ const Loading = ({ percent }: { percent: number }) => {
     <>
       <div className="loading-header">
         <a href="/#" className="loader-title" data-cursor="disable">
-          <img src="/images/M-logo.jpg" alt="Logo" style={{ height: "45px", width: "auto", borderRadius: "50%" }} />
+          <img src={`${baseUrl}images/M-logo.jpg`} alt="Logo" style={{ height: "45px", width: "auto", borderRadius: "50%" }} />
         </a>
         <div className={`loaderGame ${clicked && "loader-out"}`}>
           <div className="loaderGame-container">
