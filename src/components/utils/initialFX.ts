@@ -1,5 +1,5 @@
 import { gsap } from "gsap";
-import { SplitText } from "gsap/SplitText";
+import SplitType from "split-type";
 import { smoother } from "../Navbar";
 
 export function initialFX() {
@@ -13,19 +13,17 @@ export function initialFX() {
     delay: 1,
   });
 
-  // Only create SplitText for selectors that have elements
-  const exitingSelectors = [".landing-info h3", ".landing-intro h2", ".landing-intro h1"].filter(
-    (sel) => document.querySelector(sel)
-  );
-  
-  let landingText: any = null;
-  if (exitingSelectors.length > 0) {
-    landingText = new SplitText(exitingSelectors, {
-      type: "chars,lines",
-      linesClass: "split-line",
-    });
-    
-    if (landingText?.chars && landingText.chars.length > 0) {
+  // Only create SplitType for selectors that have elements
+  const exitingElements = [".landing-info h3", ".landing-intro h2", ".landing-intro h1"]
+    .map((sel) => document.querySelector(sel))
+    .filter((el): el is HTMLElement => el !== null);
+
+  let landingText: SplitType | null = null;
+  if (exitingElements.length > 0) {
+    landingText = new SplitType(exitingElements, { types: "chars,lines" });
+    landingText.lines?.forEach((line: HTMLElement) => line.classList.add("split-line"));
+
+    if (landingText.chars && landingText.chars.length > 0) {
       gsap.fromTo(
         landingText.chars,
         { opacity: 0, y: 80, filter: "blur(5px)" },
@@ -42,15 +40,21 @@ export function initialFX() {
     }
   }
 
-  let TextProps = { type: "chars,lines", linesClass: "split-h2" };
-
   const prefixItems = document.querySelectorAll(".skill-prefix-item");
   const suffixItems = document.querySelectorAll(".skill-suffix-item");
 
-  const prefixTexts = Array.from(prefixItems).map((el) => new SplitText(el, TextProps));
-  const suffixTexts = Array.from(suffixItems).map((el) => new SplitText(el, TextProps));
+  const prefixTexts = Array.from(prefixItems).map((el) => {
+    const split = new SplitType(el as HTMLElement, { types: "chars,lines" });
+    split.lines?.forEach((line: HTMLElement) => line.classList.add("split-h2"));
+    return split;
+  });
+  const suffixTexts = Array.from(suffixItems).map((el) => {
+    const split = new SplitType(el as HTMLElement, { types: "chars,lines" });
+    split.lines?.forEach((line: HTMLElement) => line.classList.add("split-h2"));
+    return split;
+  });
 
-  // Make the parent containers fully visible now that GSAP SplitText has parsed them.
+  // Make the parent containers fully visible now that SplitType has parsed them.
   gsap.set(".skill-prefix-item", { opacity: 1 });
   gsap.set(".skill-suffix-item", { opacity: 1 });
 
@@ -117,9 +121,9 @@ export function initialFX() {
   LoopSequence(prefixTexts, suffixTexts);
 }
 
-function LoopSequence(prefixArray: any[], suffixArray: any[]) {
+function LoopSequence(prefixArray: SplitType[], suffixArray: SplitType[]) {
   if (prefixArray.length === 0 || suffixArray.length === 0) return;
-  
+
   var tl = gsap.timeline({ repeat: -1 });
   const delay = 4;
 
@@ -147,7 +151,7 @@ function LoopSequence(prefixArray: any[], suffixArray: any[]) {
     } else {
       tl.add(`+=${delay}`);
     }
-    
+
     if (currentSuffix?.chars && currentSuffix.chars.length > 0) {
       tl.to(
         currentSuffix.chars,
@@ -161,7 +165,7 @@ function LoopSequence(prefixArray: any[], suffixArray: any[]) {
         "<"
       );
     }
-    
+
     if (nextPrefix?.chars && nextPrefix.chars.length > 0) {
       tl.fromTo(
         nextPrefix.chars,
@@ -176,7 +180,7 @@ function LoopSequence(prefixArray: any[], suffixArray: any[]) {
         "<"
       );
     }
-    
+
     if (nextSuffix?.chars && nextSuffix.chars.length > 0) {
       tl.fromTo(
         nextSuffix.chars,
