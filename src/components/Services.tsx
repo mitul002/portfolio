@@ -27,6 +27,12 @@ const Services = ({ openModal }: ServicesProps) => {
         <h2 className="section-title">Services</h2>
         <div className="services-grid">
           <div className="service-card">
+            <div className="service-icon">✏️</div>
+            <h3>Graphic Design</h3>
+            <p>Brand identity and visual storytelling.</p>
+            <button className="service-btn" onClick={() => scrollToSection('contact')}>Book Service →</button>
+          </div>
+          <div className="service-card">
             <div className="service-icon">🎨</div>
             <h3>UI/UX Design</h3>
             <p>Frictionless user journeys and stunning interfaces.</p>
@@ -54,12 +60,6 @@ const Services = ({ openModal }: ServicesProps) => {
             <div className="service-icon">🎵</div>
             <h3>Sound Design</h3>
             <p>Immersive audio landscapes and foley.</p>
-            <button className="service-btn" onClick={() => scrollToSection('contact')}>Book Service →</button>
-          </div>
-          <div className="service-card">
-            <div className="service-icon">✏️</div>
-            <h3>Graphic Design</h3>
-            <p>Brand identity and visual storytelling.</p>
             <button className="service-btn" onClick={() => scrollToSection('contact')}>Book Service →</button>
           </div>
         </div>
