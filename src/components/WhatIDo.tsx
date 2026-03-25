@@ -32,8 +32,10 @@ const WhatIDo = () => {
       <section id="whatido" className="whatIDO">
         <div className="what-box">
           <h2 className="title">
-            <div>WHAT</div>
-            <div><span className="accent-text">I DO</span></div>
+            W<span className="hat-h2">HAT</span>
+            <div>
+              I<span className="do-h2"> DO</span>
+            </div>
           </h2>
         </div>
         <div className="what-box">
