@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import "./styles/Work.css";
 import WorkImage from "./WorkImage";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
@@ -65,13 +65,21 @@ const Work = () => {
     const newIndex =
       currentIndex === 0 ? projects.length - 1 : currentIndex - 1;
     goToSlide(newIndex);
-  }, [currentIndex, goToSlide]);
+  }, [currentIndex, goToSlide, projects.length]);
 
   const goToNext = useCallback(() => {
     const newIndex =
       currentIndex === projects.length - 1 ? 0 : currentIndex + 1;
     goToSlide(newIndex);
-  }, [currentIndex, goToSlide]);
+  }, [currentIndex, goToSlide, projects.length]);
+
+  // Auto-sliding logic
+  useEffect(() => {
+    const interval = setInterval(() => {
+      goToNext();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [goToNext]);
 
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
