@@ -82,7 +82,7 @@ const Navbar = ({ openModal }: NavbarProps) => {
         </ul>
 
         <div className="header-right">
-          <button className="btn-lets-talk desktop-only" onClick={openModal} data-cursor="pointer">
+          <button className="btn-lets-talk" onClick={openModal} data-cursor="pointer">
             Let's Talk <MdArrowRight style={{marginLeft:'4px', fontSize:'14px'}} />
           </button>
           
@@ -109,11 +109,7 @@ const Navbar = ({ openModal }: NavbarProps) => {
                 </a>
               </li>
             ))}
-            <li>
-              <button className="btn-lets-talk mobile-lets-talk" onClick={() => { openModal(); setIsMobileMenuOpen(false); }}>
-                Let's Talk <MdArrowRight style={{marginLeft:'4px', fontSize:'14px'}} />
-              </button>
-            </li>
+            
           </ul>
         </nav>
       </div>

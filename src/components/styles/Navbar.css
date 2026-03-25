@@ -146,11 +146,7 @@
 }
 
 
-/* Desktop/Mobile visibility utilities */
-.desktop-only {
-  display: flex;
-}
-
+/* Mobile-only utility */
 .mobile-only {
   display: none;
 }
@@ -232,10 +228,6 @@
 
 /* Show mobile menu on mobile devices */
 @media only screen and (max-width: 900px) {
-  .desktop-only {
-    display: none;
-  }
-
   .mobile-only {
     display: flex;
   }
@@ -246,6 +238,19 @@
 
   .nav-desktop {
     display: none;
+  }
+  
+  .header-right {
+    gap: 8px;
+  }
+  
+  .btn-lets-talk {
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+  
+  .hamburger-btn {
+    padding: 6px;
   }
 }
 
