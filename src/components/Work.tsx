@@ -3,53 +3,53 @@ import "./styles/Work.css";
 import WorkImage from "./WorkImage";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
-// ... inside Work.tsx projects array above component
-const projects = [
-  {
-    title: "Prayer Times",
-    category: "Progressive Web App",
-    tools: "HTML, CSS, JavaScript, REST API, Firebase",
-    image: "/images/Maxlife.png",
-    link: "https://www.prayer-times.me/",
-    github: "https://github.com/mitul002",
-  },
-  {
-    title: "Xperts",
-    category: "On-demand Service Platform",
-    tools: "HTML, CSS, JavaScript, PHP, Firebase, PWA",
-    image: "/images/Solidx.png",
-    link: "https://mitul002.github.io/xperts_web",
-    github: "https://github.com/mitul002/xperts_web",
-  },
-  {
-    title: "Zedd Downloader",
-    category: "Web Application",
-    tools: "HTML, CSS, JavaScript, Backend Automation",
-    image: "/images/bond.png",
-    link: "https://zedd-downloader.onrender.com/",
-    github: "https://github.com/mitul002",
-  },
-  {
-    title: "Parkinson's Disease Detection System",
-    category: "AI-powered Web App",
-    tools: "Python, Streamlit, OpenCV, scikit-image, ResNet18, Random Forest, SHAP, LIME",
-    image: "/images/radix.png",
-    link: "https://parkinson-detection-system.streamlit.app/",
-    github: "https://github.com/mitul002",
-  },
-  {
-    title: "Aura AI Assistant",
-    category: "AI Chatbot Web App",
-    tools: "HTML5, CSS3, JavaScript, REST API, n8n, Google Sheets",
-    image: "/images/sapphire.png",
-    link: "",
-    github: "https://github.com/mitul002",
-  },
-];
-
 const Work = () => {
+  const baseUrl = import.meta.env.BASE_URL;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const projects = [
+    {
+      title: "Prayer Times",
+      category: "Progressive Web App",
+      tools: "HTML, CSS, JavaScript, REST API, Firebase",
+      image: `${baseUrl}images/Maxlife.png`,
+      link: "https://www.prayer-times.me/",
+      github: "https://github.com/mitul002",
+    },
+    {
+      title: "Xperts",
+      category: "On-demand Service Platform",
+      tools: "HTML, CSS, JavaScript, PHP, Firebase, PWA",
+      image: `${baseUrl}images/Solidx.png`,
+      link: "https://mitul002.github.io/xperts_web",
+      github: "https://github.com/mitul002/xperts_web",
+    },
+    {
+      title: "Zedd Downloader",
+      category: "Web Application",
+      tools: "HTML, CSS, JavaScript, Backend Automation",
+      image: `${baseUrl}images/bond.png`,
+      link: "https://zedd-downloader.onrender.com/",
+      github: "https://github.com/mitul002",
+    },
+    {
+      title: "Parkinson's Disease Detection System",
+      category: "AI-powered Web App",
+      tools: "Python, Streamlit, OpenCV, scikit-image, ResNet18, Random Forest, SHAP, LIME",
+      image: `${baseUrl}images/radix.png`,
+      link: "https://parkinson-detection-system.streamlit.app/",
+      github: "https://github.com/mitul002",
+    },
+    {
+      title: "Aura AI Assistant",
+      category: "AI Chatbot Web App",
+      tools: "HTML5, CSS3, JavaScript, REST API, n8n, Google Sheets",
+      image: `${baseUrl}images/sapphire.png`,
+      link: "",
+      github: "https://github.com/mitul002",
+    },
+  ];
 
   const goToSlide = useCallback(
     (index: number) => {
