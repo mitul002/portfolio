@@ -61,7 +61,7 @@ const Career = () => {
               <h3>2020 - 2023</h3>
             </div>
             <p>
-              Provided freelance services in branding, design, and web development for various clients worldwide. Delivered creative solutions and maintained client satisfaction through effective communication and timely delivery.
+              Provided freelance services in branding design, for various clients worldwide. Delivered creative designs and maintained client satisfaction through effective communication and timely delivery.
             </p>
           </div>
         </div>

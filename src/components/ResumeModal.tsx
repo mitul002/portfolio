@@ -73,7 +73,7 @@ const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
 
         <div className="resume-viewer" style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 0' }}>
           <Document 
-            file="/Resume/resume_data.bin" 
+            file={`${import.meta.env.BASE_URL}Resume/resume_data.bin`}
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<div style={{padding: '40px', color: '#a1a1aa', fontWeight: 500}}>Loading Digital Preview...</div>}
             error={<div style={{padding: '40px', color: '#ef4444', fontWeight: 500}}>Failed to load preview. Please download directly.</div>}
@@ -94,7 +94,7 @@ const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
 
         {/* Premium Floating Download Icon */}
         <a 
-          href="/Resume/resume.pdf" 
+          href={`${import.meta.env.BASE_URL}Resume/resume.pdf`}
           download="Md_Hasin_Almas_Mitul_Resume.pdf" 
           style={{ 
             position: 'absolute', bottom: '30px', right: '30px', 
